@@ -7,3 +7,9 @@ The following changes were made:
 * Weak encryption code in MiniZip library was explicitly disabled by removing crypt.h and defining NOCRYPT and NOUNCRYPT.
 * Compiler warnings reported by LLVM 2.0 compiler (Xcode 4) were fixed.
 
+
+Code license
+
+* Objective-Zip: [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
+* MiniZip: [See MiniZip website](http://www.winimage.com/zLibDll/minizip.html)
+
