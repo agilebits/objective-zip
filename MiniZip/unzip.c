@@ -34,6 +34,8 @@ woven in by Terry Thorsen 1/2003.
   version without encryption capabilities).
  */
 
+#define NOCRYPT
+#define NOUNCRYPT
 
 #include <stdio.h>
 #include <stdlib.h>
