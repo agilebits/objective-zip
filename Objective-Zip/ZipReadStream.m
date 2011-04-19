@@ -41,7 +41,7 @@
 
 
 - (id) initWithUnzFileStruct:(unzFile)unzFile fileNameInZip:(NSString *)fileNameInZip {
-	if (self= [super init]) {
+	if ((self= [super init])) {
 		_unzFile= unzFile;
 		_fileNameInZip= fileNameInZip;
 	}
