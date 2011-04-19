@@ -1,4 +1,4 @@
-This is a copy of "objective-zip library":http://code.google.com/p/objective-zip/ developed by "Flying Dolphin Studio"http://www.flyingdolphinstudio.com/Flying_Dolphin_Studio/Home.html. 
+This is a copy of [objective-zip library](http://code.google.com/p/objective-zip/) developed by [Flying Dolphin Studio](http://www.flyingdolphinstudio.com). 
 
 The following changes were made:
 
