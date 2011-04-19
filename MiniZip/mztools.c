@@ -136,28 +136,28 @@ uLong* bytesRecovered;
         
         /* Central directory entry */
         {
-          char header[46];
+          char cdeHeader[46];
           char* comment = "";
           int comsize = (int) strlen(comment);
-          WRITE_32(header, 0x02014b50);
-          WRITE_16(header + 4, version);
-          WRITE_16(header + 6, version);
-          WRITE_16(header + 8, gpflag);
-          WRITE_16(header + 10, method);
-          WRITE_16(header + 12, filetime);
-          WRITE_16(header + 14, filedate);
-          WRITE_32(header + 16, crc);
-          WRITE_32(header + 20, cpsize);
-          WRITE_32(header + 24, uncpsize);
-          WRITE_16(header + 28, fnsize);
-          WRITE_16(header + 30, extsize);
-          WRITE_16(header + 32, comsize);
-          WRITE_16(header + 34, 0);     /* disk # */
-          WRITE_16(header + 36, 0);     /* int attrb */
-          WRITE_32(header + 38, 0);     /* ext attrb */
-          WRITE_32(header + 42, currentOffset);
+          WRITE_32(cdeHeader, 0x02014b50);
+          WRITE_16(cdeHeader + 4, version);
+          WRITE_16(cdeHeader + 6, version);
+          WRITE_16(cdeHeader + 8, gpflag);
+          WRITE_16(cdeHeader + 10, method);
+          WRITE_16(cdeHeader + 12, filetime);
+          WRITE_16(cdeHeader + 14, filedate);
+          WRITE_32(cdeHeader + 16, crc);
+          WRITE_32(cdeHeader + 20, cpsize);
+          WRITE_32(cdeHeader + 24, uncpsize);
+          WRITE_16(cdeHeader + 28, fnsize);
+          WRITE_16(cdeHeader + 30, extsize);
+          WRITE_16(cdeHeader + 32, comsize);
+          WRITE_16(cdeHeader + 34, 0);     /* disk # */
+          WRITE_16(cdeHeader + 36, 0);     /* int attrb */
+          WRITE_32(cdeHeader + 38, 0);     /* ext attrb */
+          WRITE_32(cdeHeader + 42, currentOffset);
           /* Header */
-          if (fwrite(header, 1, 46, fpOutCD) == 46) {
+          if (fwrite(cdeHeader, 1, 46, fpOutCD) == 46) {
             offsetCD += 46;
             
             /* Filename */
@@ -208,38 +208,38 @@ uLong* bytesRecovered;
       }
     }
 
-    /* Final central directory  */
-    {
-      int entriesZip = entries;
-      char header[22];
-      char* comment = ""; // "ZIP File recovered by zlib/minizip/mztools";
-      int comsize = (int) strlen(comment);
-      if (entriesZip > 0xffff) {
-        entriesZip = 0xffff;
-      }
-      WRITE_32(header, 0x06054b50);
-      WRITE_16(header + 4, 0);    /* disk # */
-      WRITE_16(header + 6, 0);    /* disk # */
-      WRITE_16(header + 8, entriesZip);   /* hack */
-      WRITE_16(header + 10, entriesZip);  /* hack */
-      WRITE_32(header + 12, offsetCD);    /* size of CD */
-      WRITE_32(header + 16, offset);      /* offset to CD */
-      WRITE_16(header + 20, comsize);     /* comment */
-      
-      /* Header */
-      if (fwrite(header, 1, 22, fpOutCD) == 22) {
-        
-        /* Comment field */
-        if (comsize > 0) {
-          if ((int)fwrite(comment, 1, comsize, fpOutCD) != comsize) {
-            err = Z_ERRNO;
-          }
-        }
-        
-      } else {
-        err = Z_ERRNO;
-      }
-    }
+	/* Final central directory  */
+	{
+		int entriesZip = entries;
+		char fcdHeader[22];
+		char* comment = ""; // "ZIP File recovered by zlib/minizip/mztools";
+		int comsize = (int) strlen(comment);
+		if (entriesZip > 0xffff) {
+		  entriesZip = 0xffff;
+		}
+		WRITE_32(fcdHeader, 0x06054b50);
+		WRITE_16(fcdHeader + 4, 0);    /* disk # */
+		WRITE_16(fcdHeader + 6, 0);    /* disk # */
+		WRITE_16(fcdHeader + 8, entriesZip);   /* hack */
+		WRITE_16(fcdHeader + 10, entriesZip);  /* hack */
+		WRITE_32(fcdHeader + 12, offsetCD);    /* size of CD */
+		WRITE_32(fcdHeader + 16, offset);      /* offset to CD */
+		WRITE_16(fcdHeader + 20, comsize);     /* comment */
+
+		/* Header */
+		if (fwrite(fcdHeader, 1, 22, fpOutCD) == 22) {
+		  
+		  /* Comment field */
+		  if (comsize > 0) {
+			  if ((int)fwrite(comment, 1, comsize, fpOutCD) != comsize) {
+				  err = Z_ERRNO;
+			  }
+		  }
+		  
+		} else {
+		  err = Z_ERRNO;
+		}
+	}
 
     /* Final merge (file + central directory) */
     fclose(fpOutCD);
