@@ -49,14 +49,16 @@
 	return self;
 }
 
-- (NSUInteger) readDataWithBuffer:(NSMutableData *)buffer {
-	int err= unzReadCurrentFile(_unzFile, [buffer mutableBytes], [buffer length]);
-	if (err < 0) {
+- (NSData *)readDataOfLength:(NSUInteger)length {
+	NSMutableData *data = [NSMutableData dataWithLength:length];
+	int bytes = unzReadCurrentFile(_unzFile, [data mutableBytes], length);
+	if (bytes < 0) {
 		NSString *reason= [NSString stringWithFormat:@"Error in reading '%@' in the zipfile", _fileNameInZip];
-		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
+		@throw [[[ZipException alloc] initWithError:bytes reason:reason] autorelease];
 	}
 	
-	return err;
+	[data setLength:bytes];
+	return data;
 }
 
 - (void) finishedReading {
