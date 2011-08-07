@@ -32,33 +32,29 @@
 //
 
 #import "FileInZipInfo.h"
-#import "ZipARC.h"
+
 
 @implementation FileInZipInfo
 
 - (id) initWithName:(NSString *)name length:(NSUInteger)length level:(ZipCompressionLevel)level crypted:(BOOL)crypted size:(NSUInteger)size date:(NSDate *)date crc32:(NSUInteger)crc32 {
 	if ((self = [super init])) {
-		NO_ARC([name retain];)
-		_name= name;
+		_name= [name retain];
 		_length= length;
 		_level= level;
 		_crypted= crypted;
 		_size= size;
-		NO_ARC([date retain];)
-		_date= date;
+		_date= [date retain];
 		_crc32= crc32;
 	}
 	
 	return self;
 }
 
-NO_ARC(
 - (void) dealloc {
 	[_date release];
 	[_name release];
 	[super dealloc];
 }
-)
 
 @synthesize name= _name;
 @synthesize length= _length;

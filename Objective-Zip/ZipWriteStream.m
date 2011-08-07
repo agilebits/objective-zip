@@ -33,8 +33,9 @@
 
 #import "ZipWriteStream.h"
 #import "ZipException.h"
+
 #include "zip.h"
-#import "ZipARC.h"
+
 
 @implementation ZipWriteStream
 
@@ -52,7 +53,7 @@
 	int err= zipWriteInFileInZip(_zipFile, [data bytes], [data length]);
 	if (err < 0) {
 		NSString *reason= [NSString stringWithFormat:@"Error in writing '%@' in the zipfile", _fileNameInZip];
-		@throw IF_ARC([[ZipException alloc] initWithError:err reason:reason];, [[[ZipException alloc] initWithError:err reason:reason] autorelease];)
+		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
 	}
 }
 
@@ -60,7 +61,7 @@
 	int err= zipCloseFileInZip(_zipFile);
 	if (err != ZIP_OK) {
 		NSString *reason= [NSString stringWithFormat:@"Error in closing '%@' in the zipfile", _fileNameInZip];
-		@throw IF_ARC([[ZipException alloc] initWithError:err reason:reason];, [[[ZipException alloc] initWithError:err reason:reason] autorelease];)
+		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
 	}
 }
 

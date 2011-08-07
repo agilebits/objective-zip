@@ -34,6 +34,7 @@
 #import <Foundation/Foundation.h>
 #import "ZipFile.h"
 
+
 @interface FileInZipInfo : NSObject {
 	
 @private
