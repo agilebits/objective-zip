@@ -57,6 +57,7 @@ typedef enum {
 @interface ZipFile : NSObject {
 	NSString *_fileName;
 	ZipFileMode _mode;
+    NSDictionary *contents;
 
 @private
 	zipFile _zipFile;
