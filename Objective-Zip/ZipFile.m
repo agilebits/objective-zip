@@ -39,7 +39,6 @@
 
 #define FILE_IN_ZIP_MAX_NAME_LENGTH (256)
 
-
 @implementation ZipFile
 
 
@@ -55,6 +54,25 @@
 					NSString *reason= [NSString stringWithFormat:@"Can't open '%@'", _fileName];
 					@throw [[[ZipException alloc] initWithReason:reason] autorelease];
 				}
+                
+                unzGoToFirstFile(_unzFile);
+                
+                NSMutableDictionary* dic = [NSMutableDictionary dictionary];
+                
+                do {
+                    FileInZipInfo* info = [self getCurrentFileInZipInfo];
+                    unz_file_pos pos;
+                    int err = unzGetFilePos(_unzFile, &pos);
+                    if (err == UNZ_OK) {
+                        [dic setObject:[NSArray arrayWithObjects:
+                                        [NSNumber numberWithLong:pos.pos_in_zip_directory],
+                                        [NSNumber numberWithLong:pos.num_of_file],
+                                        nil] forKey:info.name];
+                    }
+                } while (unzGoToNextFile (_unzFile) != UNZ_END_OF_LIST_OF_FILE);
+                
+                contents = [dic retain];
+                
 				break;
 				
 			case ZipFileModeCreate:
@@ -85,6 +103,7 @@
 
 - (void) dealloc {
 	[_fileName release];
+    [contents release];
 	[super dealloc];
 }
 
@@ -269,8 +288,19 @@
 		@throw [[[ZipException alloc] initWithReason:reason] autorelease];
 	}
 	
-	int err= unzLocateFile(_unzFile, [fileNameInZip cStringUsingEncoding:NSUTF8StringEncoding], 1);
-	if (err == UNZ_END_OF_LIST_OF_FILE)
+	//int err= unzLocateFile(_unzFile, [fileNameInZip cStringUsingEncoding:NSUTF8StringEncoding], 1);
+	
+    NSArray* info = [contents objectForKey:fileNameInZip];
+    
+    if (!info) return NO;
+    
+    unz_file_pos pos;
+    pos.pos_in_zip_directory = [[info objectAtIndex:0] longValue];
+    pos.num_of_file = [[info objectAtIndex:1] longValue];
+    
+    int err = unzGoToFilePos(_unzFile, &pos);
+    
+    if (err == UNZ_END_OF_LIST_OF_FILE)
 		return NO;
 
 	if (err != UNZ_OK) {
