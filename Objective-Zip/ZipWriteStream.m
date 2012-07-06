@@ -49,12 +49,16 @@
 	return self;
 }
 
-- (void) writeData:(NSData *)data {
-	int err= zipWriteInFileInZip(_zipFile, [data bytes], (unsigned)[data length]);
+- (void) writeBytes:(const void *)bytes length:(unsigned int)length {
+	int err= zipWriteInFileInZip(_zipFile, bytes, length);
 	if (err < 0) {
 		NSString *reason= [NSString stringWithFormat:@"Error in writing '%@' in the zipfile", _fileNameInZip];
 		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
 	}
+}
+
+- (void) writeData:(NSData *)data {
+    [self writeBytes:data.bytes length:(unsigned int)data.length];
 }
 
 - (void) finishedWriting {
