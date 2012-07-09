@@ -73,7 +73,7 @@ typedef enum {
 - (NSUInteger) numFilesInZip;
 - (NSArray *) listFileInZipInfos;
 
-- (void) goToFirstFileInZip;
+- (BOOL) goToFirstFileInZip;
 - (BOOL) goToNextFileInZip;
 - (BOOL) locateFileInZip:(NSString *)fileNameInZip;
 

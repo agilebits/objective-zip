@@ -251,17 +251,21 @@
 	return files;
 }
 
-- (void) goToFirstFileInZip {
+- (BOOL)goToFirstFileInZip
+{
 	if (_mode != ZipFileModeUnzip) {
 		NSString *reason= [NSString stringWithFormat:@"Operation not permitted without Unzip mode"];
 		@throw [[[ZipException alloc] initWithReason:reason] autorelease];
+        return NO;
 	}
 	
 	int err= unzGoToFirstFile(_unzFile);
-	if (err != UNZ_OK) {
-		NSString *reason= [NSString stringWithFormat:@"Error in going to first file in zip in '%@'", _fileName];
-		@throw [[[ZipException alloc] initWithError:err reason:reason] autorelease];
-	}
+	if (err != UNZ_OK)
+    {
+        NSLog(@"Error in going to first file in zip in '%@'", _fileName);
+    }
+    
+    return YES;
 }
 
 - (BOOL) goToNextFileInZip {
