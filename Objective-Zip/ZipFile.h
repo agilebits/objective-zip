@@ -77,7 +77,7 @@ typedef enum {
 - (BOOL) goToNextFileInZip;
 - (BOOL) locateFileInZip:(NSString *)fileNameInZip;
 
-- (FileInZipInfo *) getCurrentFileInZipInfo;
+- (FileInZipInfo *) currentFileInZipInfo;
 
 - (ZipReadStream *) readCurrentFileInZip;
 - (ZipReadStream *) readCurrentFileInZipWithPassword:(NSString *)password;

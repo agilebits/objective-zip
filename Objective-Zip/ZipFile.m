@@ -60,7 +60,7 @@
                 NSMutableDictionary* dic = [NSMutableDictionary dictionary];
                 
                 do {
-                    FileInZipInfo* info = [self getCurrentFileInZipInfo];
+                    FileInZipInfo* info = [self currentFileInZipInfo];
                     unz_file_pos pos;
                     int err = unzGetFilePos(_unzFile, &pos);
                     if (err == UNZ_OK) {
@@ -241,7 +241,7 @@
 
 	[self goToFirstFileInZip];
 	for (int i= 0; i < num; i++) {
-		FileInZipInfo *info= [self getCurrentFileInZipInfo];
+		FileInZipInfo *info= [self currentFileInZipInfo];
 		[files addObject:info];
 
 		if ((i +1) < num)
@@ -311,7 +311,7 @@
 	return YES;
 }
 
-- (FileInZipInfo *) getCurrentFileInZipInfo {
+- (FileInZipInfo *)currentFileInZipInfo {
 	if (_mode != ZipFileModeUnzip) {
 		NSString *reason= [NSString stringWithFormat:@"Operation not permitted without Unzip mode"];
 		@throw [[[ZipException alloc] initWithReason:reason] autorelease];
