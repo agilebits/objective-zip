@@ -291,7 +291,7 @@
 	
 	//int err= unzLocateFile(_unzFile, [fileNameInZip cStringUsingEncoding:NSUTF8StringEncoding], 1);
 	
-    NSArray* info = [contents objectForKey:fileNameInZip];
+    NSArray* info = [contents objectForKey:[fileNameInZip decomposedStringWithCanonicalMapping]];
     
     if (!info) return NO;
     
@@ -327,8 +327,8 @@
 		@throw [[ZipException alloc] initWithError:err reason:reason];
 	}
 	
-	NSString *name= [NSString stringWithCString:filename_inzip encoding:NSUTF8StringEncoding];
-	
+	NSString *name= [[NSString stringWithUTF8String:filename_inzip] decomposedStringWithCanonicalMapping];
+    
 	ZipCompressionLevel level= ZipCompressionLevelNone;
 	if (file_info.compression_method != 0) {
 		switch ((file_info.flag & 0x6) / 2) {
