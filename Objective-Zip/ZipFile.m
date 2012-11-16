@@ -64,7 +64,7 @@
                     FileInZipInfo* info = [self currentFileInZipInfo];
                     unz_file_pos pos;
                     int err = unzGetFilePos(_unzFile, &pos);
-                    if (err == UNZ_OK) {
+                    if (err == UNZ_OK && info.name) {
                         [dic setObject:[NSArray arrayWithObjects:
                                         [NSNumber numberWithLong:pos.pos_in_zip_directory],
                                         [NSNumber numberWithLong:pos.num_of_file],
