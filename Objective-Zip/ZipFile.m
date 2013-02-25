@@ -37,7 +37,7 @@
 #import "ZipWriteStream.h"
 #import "FIleInZipInfo.h"
 
-#define FILE_IN_ZIP_MAX_NAME_LENGTH (256)
+#define FILE_IN_ZIP_MAX_NAME_LENGTH (512)
 
 @implementation ZipFile
 
