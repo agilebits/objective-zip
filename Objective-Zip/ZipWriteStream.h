@@ -45,6 +45,7 @@
 
 - (id) initWithZipFileStruct:(zipFile)zipFile fileNameInZip:(NSString *)fileNameInZip;
 
+- (void) writeBytes:(const void *)bytes length:(unsigned int)length;
 - (void) writeData:(NSData *)data;
 - (void) finishedWriting;
 
